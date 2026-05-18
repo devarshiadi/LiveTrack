@@ -104,6 +104,33 @@ so an app crash also schedules a tracking restart before the process dies.
 | Device reboot | `BootReceiver` (`BOOT_COMPLETED`) |
 | Service silently dead | `TrackingWatchdogWorker` (WorkManager/JobScheduler, 15 min) |
 
+## Built-in Android scheduling & system APIs used
+
+The background behaviour is built entirely on standard platform APIs — there is
+no third-party background SDK.
+
+| Platform API | Used in | Role |
+|---|---|---|
+| **WorkManager → JobScheduler** | `TrackingWatchdogWorker` | A **periodic scheduled job** (15 min — the WorkManager minimum). Watchdog only: checks the service is alive and restarts it. WorkManager dispatches it through the OS **JobScheduler**. |
+| **AlarmManager** | `RestartReceiver.scheduleRestart()` | A **one-shot `setAndAllowWhileIdle` alarm** (~2 s) — quick restart after a recents-swipe or a crash. |
+| **Foreground Service** | `LocationTrackingService` | The always-on host for tracking + the ongoing notification. |
+| **BroadcastReceiver** | `BootReceiver`, `RestartReceiver`, `LocationUpdateReceiver` | System callbacks — boot completed, alarm fired, location delivered. |
+| **PendingIntent + FusedLocationProviderClient** | service registration | Play Services holds the request and delivers fixes — survives process death. |
+
+### Important distinction — the scheduler job is NOT the capture engine
+
+The scheduled job (WorkManager/JobScheduler, 15 min) is a **watchdog / safety
+net**, not the location source. The real ~2-minute capture cadence is driven by
+the **foreground service + the PendingIntent held by Google Play Services**.
+
+JobScheduler/WorkManager is deliberately *not* used as the capture engine:
+- Its minimum periodic interval is **15 minutes** — far too slow for a 2-minute cadence.
+- Scheduled jobs are **deferrable** — Android delays them under Doze / battery
+  saver; a running foreground service is exempt and fires on time.
+
+So: **foreground service + PendingIntent = the real-time engine**;
+**AlarmManager + WorkManager/JobScheduler + BootReceiver = the recovery layers.**
+
 ## "Clearing the app" — what actually happens
 
 Clearing the app = swiping it from Recent Apps. The task is removed, but:
@@ -118,7 +145,10 @@ tracking continues.
   the app into a *stopped state* — `START_STICKY`, alarms, WorkManager jobs and
   boot receivers are all blocked until the user manually launches the app again.
   This is OS policy; no app can bypass it.
-
+- **OEM battery killers** (Xiaomi/MIUI, Oppo/ColorOS, Vivo, Huawei, Samsung):
+  aggressive vendor battery management can still kill the service. The only
+  mitigation is the user enabling "Autostart" + the battery-optimization
+  exemption; the app's onboarding links to dontkillmyapp.com.
 
 ## Permissions — no Developer Options required
 
