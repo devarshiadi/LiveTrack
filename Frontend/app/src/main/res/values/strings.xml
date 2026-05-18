@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Live GPS</string>
+    <string name="notification_channel_name">Location tracking</string>
+    <string name="notification_channel_desc">Shown while your location is being tracked.</string>
+</resources>

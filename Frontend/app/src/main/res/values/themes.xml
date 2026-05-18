@@ -1,0 +1,8 @@
+<resources>
+    <!-- Window theme only. All real UI is Jetpack Compose (Material 3). -->
+    <style name="Theme.LiveGps" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/surface</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+    </style>
+</resources>

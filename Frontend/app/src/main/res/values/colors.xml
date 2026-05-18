@@ -1,0 +1,5 @@
+<resources>
+    <!-- Used by the XML window theme; the Compose UI defines its own M3 scheme. -->
+    <color name="primary">#6750A4</color>
+    <color name="surface">#FEF7FF</color>
+</resources>
