@@ -1,0 +1,48 @@
+[versions]
+agp = "8.11.1"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.28"
+coreKtx = "1.13.1"
+lifecycle = "2.8.7"
+activityCompose = "1.9.3"
+composeBom = "2024.10.01"
+navigationCompose = "2.8.4"
+playServicesLocation = "21.3.0"
+osmdroid = "6.1.20"
+workManager = "2.9.1"
+coroutines = "1.8.1"
+okhttp = "4.12.0"
+room = "2.6.1"
+datastore = "1.1.1"
+
+[libraries]
+androidx-core-ktx           = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime  = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-service  = { module = "androidx.lifecycle:lifecycle-service", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose   = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-activity-compose   = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+compose-bom                 = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-ui                  = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics         = { module = "androidx.compose.ui:ui-graphics" }
+compose-ui-tooling          = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview  = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material3           = { module = "androidx.compose.material3:material3" }
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
+navigation-compose          = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+play-services-location      = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+osmdroid-android            = { module = "org.osmdroid:osmdroid-android", version.ref = "osmdroid" }
+work-runtime-ktx            = { module = "androidx.work:work-runtime-ktx", version.ref = "workManager" }
+coroutines-android          = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-play-services    = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "coroutines" }
+okhttp                      = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+room-runtime                = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx                    = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler               = { module = "androidx.room:room-compiler", version.ref = "room" }
+datastore-preferences       = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android      = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose      = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp                 = { id = "com.google.devtools.ksp", version.ref = "ksp" }
