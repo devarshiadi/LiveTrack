@@ -1,0 +1,133 @@
+/* Material 3 design tokens + base components — light & dark.
+   Purple baseline, tuned to the Live GPS dashboard mockup. */
+
+:root {
+  --bg:              #F4F2F8;
+  --surface:         #FFFFFF;
+  --surface-2:       #F2EDF9;
+  --surface-3:       #ECE5F6;
+  --primary:         #6750A4;
+  --on-primary:      #FFFFFF;
+  --primary-c:       #E9DEFB;
+  --on-primary-c:    #21005D;
+  --text:            #1D1B22;
+  --text-muted:      #6F6B7A;
+  --outline:         #E6E2EE;
+  --outline-strong:  #CBC5D6;
+  --online:          #2FA84F;
+  --offline:         #EA4335;
+  --inactive:        #9AA0A6;
+  --sev-high:        #E53935;
+  --sev-medium:      #F39C12;
+  --sev-low:         #6750A4;
+  --shadow:          0 1px 3px rgba(20,12,40,.07), 0 6px 18px rgba(20,12,40,.06);
+  --radius:          18px;
+}
+
+[data-theme="dark"] {
+  --bg:              #131019;
+  --surface:         #1E1A29;
+  --surface-2:       #251F35;
+  --surface-3:       #2D2640;
+  --primary:         #CFBCFF;
+  --on-primary:      #2A1C52;
+  --primary-c:       #382C5A;
+  --on-primary-c:    #EADDFF;
+  --text:            #E9E4F1;
+  --text-muted:      #A39FB1;
+  --outline:         #342C44;
+  --outline-strong:  #463B5C;
+  --shadow:          0 1px 3px rgba(0,0,0,.4), 0 8px 22px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+h2 { font-size: 22px; font-weight: 700; }
+h3 { font-size: 15px; font-weight: 600; }
+
+.muted-sm { color: var(--text-muted); font-size: 12.5px; }
+.link {
+  color: var(--primary); font-size: 13px; font-weight: 600;
+  cursor: pointer; text-decoration: none;
+}
+.link:hover { text-decoration: underline; }
+
+.m3-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Status dots */
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dot-online   { background: var(--online); }
+.dot-offline  { background: var(--offline); }
+.dot-inactive { background: var(--inactive); }
+
+/* Buttons */
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 12px;
+  border: none; background: var(--surface-2); color: var(--text);
+  font-size: 16px; cursor: pointer; transition: background .15s;
+}
+.icon-btn:hover { background: var(--surface-3); }
+
+.btn {
+  border: none; border-radius: 12px; padding: 10px 18px;
+  font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: filter .15s;
+}
+.btn:hover { filter: brightness(.96); }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-tonal   { background: var(--primary-c); color: var(--on-primary-c); }
+.btn-ghost   { background: var(--surface-2); color: var(--text); }
+
+/* Chips */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 11px; border-radius: 50px;
+  font-size: 12px; font-weight: 600;
+}
+.chip-accuracy { background: var(--primary-c); color: var(--on-primary-c); }
+
+.pill {
+  display: inline-block; padding: 2px 9px; border-radius: 50px;
+  font-size: 11.5px; font-weight: 600;
+}
+
+/* Inputs */
+input, select {
+  font-family: inherit; font-size: 14px; color: var(--text);
+  background: var(--surface); border: 1px solid var(--outline-strong);
+  border-radius: 12px; padding: 10px 12px; outline: none;
+}
+input:focus, select:focus { border-color: var(--primary); }
+
+/* Tables */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left; font-size: 11.5px; font-weight: 600;
+  color: var(--text-muted); padding: 8px 10px;
+  border-bottom: 1px solid var(--outline);
+}
+.data-table td {
+  font-size: 13px; padding: 11px 10px;
+  border-bottom: 1px solid var(--outline);
+}
+.data-table tr:last-child td { border-bottom: none; }
+
+/* Avatar */
+.avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--primary); color: var(--on-primary);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; flex-shrink: 0;
+}
+.avatar-sm { width: 34px; height: 34px; font-size: 13px; }

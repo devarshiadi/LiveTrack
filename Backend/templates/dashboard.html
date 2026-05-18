@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live GPS Tracker</title>
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+
+  <link rel="stylesheet" href="/static/css/m3.css" />
+  <link rel="stylesheet" href="/static/css/dashboard.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+        </svg>
+      </span>
+      <span class="brand-name">Live GPS Tracker</span>
+    </div>
+
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-section="dashboard">
+        <span class="nav-ico">&#9737;</span> Dashboard
+      </button>
+      <button class="nav-item" data-section="devices">
+        <span class="nav-ico">&#9707;</span> Devices
+      </button>
+      <button class="nav-item" data-section="history">
+        <span class="nav-ico">&#8635;</span> History
+      </button>
+      <button class="nav-item" data-section="geofences">
+        <span class="nav-ico">&#9678;</span> Geofences
+      </button>
+      <button class="nav-item" data-section="alerts">
+        <span class="nav-ico">&#9888;</span> Alerts
+      </button>
+      <button class="nav-item" data-section="reports">
+        <span class="nav-ico">&#9783;</span> Reports
+      </button>
+      <button class="nav-item" data-section="settings">
+        <span class="nav-ico">&#9881;</span> Settings
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="m3-card status-card">
+        <div class="status-row">
+          <span class="dot dot-online"></span>
+          <span class="muted-sm">System status</span>
+        </div>
+        <div class="status-title">All systems operational</div>
+      </div>
+      <div class="m3-card user-card">
+        <div class="avatar">A</div>
+        <div>
+          <div class="user-name">Admin User</div>
+          <div class="muted-sm">admin@example.com</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="search">
+        <span class="search-ico">&#128269;</span>
+        <input id="search" type="text" placeholder="Search devices, places…" />
+        <span class="kbd">&#8984; K</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="theme-toggle" title="Toggle theme">&#9728;</button>
+        <button class="icon-btn" id="bell" title="Alerts">
+          &#128276;<span class="bell-dot" id="bell-dot" hidden></span>
+        </button>
+        <div class="avatar avatar-sm">A</div>
+      </div>
+    </header>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="section active" id="section-dashboard">
+      <div class="dash-grid">
+        <div class="m3-card map-card" id="map-card">
+          <div id="map"></div>
+          <button class="map-expand" id="map-expand" title="Expand / collapse map">&#9974;</button>
+        </div>
+
+        <div class="m3-card stat-card" id="card-live-status">
+          <div class="card-head"><h3>Live Status</h3>
+            <span class="muted-sm"><span class="dot dot-online"></span> <span id="ls-online">0</span> Online</span>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120">
+              <circle class="donut-track" cx="60" cy="60" r="50"></circle>
+              <circle class="donut-value" id="donut-value" cx="60" cy="60" r="50"></circle>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-num" id="ls-total">0</div>
+              <div class="muted-sm">Total Devices</div>
+            </div>
+          </div>
+          <div class="legend">
+            <span><span class="dot dot-online"></span> <b id="lg-online">0</b> Online</span>
+            <span><span class="dot dot-offline"></span> <b id="lg-offline">0</b> Offline</span>
+            <span><span class="dot dot-inactive"></span> <b id="lg-inactive">0</b> Inactive</span>
+          </div>
+        </div>
+
+        <div class="m3-card stat-card" id="card-recent-devices">
+          <div class="card-head"><h3>Recent Devices</h3>
+            <a class="link" data-section="devices">View all</a>
+          </div>
+          <div id="recent-devices" class="recent-list"></div>
+        </div>
+
+        <div class="m3-card stat-card" id="card-quick">
+          <div class="card-head"><h3>Quick Actions</h3></div>
+          <button class="quick" data-section="devices">
+            <span class="quick-ico">&#43;</span>
+            <span><b>Add Device</b><br><span class="muted-sm">Register a new tracker</span></span>
+          </button>
+          <button class="quick" data-section="geofences">
+            <span class="quick-ico">&#9678;</span>
+            <span><b>Create Geofence</b><br><span class="muted-sm">Define safe zones</span></span>
+          </button>
+          <button class="quick" data-section="reports">
+            <span class="quick-ico">&#9783;</span>
+            <span><b>Generate Report</b><br><span class="muted-sm">Export tracking data</span></span>
+          </button>
+        </div>
+
+        <div class="m3-card stat-card" id="card-accuracy">
+          <div class="card-head"><h3>Location Accuracy</h3></div>
+          <span class="chip chip-accuracy">&#10003; <span id="acc-label">High accuracy</span></span>
+          <div class="acc-big"><span id="acc-value">—</span></div>
+          <div class="muted-sm">Current accuracy</div>
+          <div class="bars" id="acc-bars"></div>
+        </div>
+
+        <div class="m3-card alerts-card">
+          <div class="card-head"><h3>Recent Alerts</h3>
+            <a class="link" data-section="alerts">View all</a>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Type</th><th>Device</th><th>Message</th><th>Time</th></tr></thead>
+            <tbody id="recent-alerts"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OTHER SECTIONS (JS-rendered) ===== -->
+    <section class="section" id="section-devices">
+      <div class="section-pad"><h2>Devices</h2><div id="devices-body"></div></div>
+    </section>
+    <section class="section" id="section-history">
+      <div class="section-pad"><h2>History</h2><div id="history-body"></div></div>
+    </section>
+    <section class="section" id="section-geofences">
+      <div class="section-pad"><h2>Geofences</h2><div id="geofences-body"></div></div>
+    </section>
+    <section class="section" id="section-alerts">
+      <div class="section-pad"><h2>Alerts</h2><div id="alerts-body"></div></div>
+    </section>
+    <section class="section" id="section-reports">
+      <div class="section-pad"><h2>Reports</h2><div id="reports-body"></div></div>
+    </section>
+    <section class="section" id="section-settings">
+      <div class="section-pad"><h2>Settings</h2><div id="settings-body"></div></div>
+    </section>
+
+    <footer class="statusbar">
+      <span class="status-led" id="status-led" data-state="connecting"></span>
+      <span id="status-text">Connecting…</span>
+      <span class="spacer"></span>
+      <span id="status-updated">—</span>
+    </footer>
+  </main>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>
