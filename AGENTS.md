@@ -118,10 +118,7 @@ tracking continues.
   the app into a *stopped state* — `START_STICKY`, alarms, WorkManager jobs and
   boot receivers are all blocked until the user manually launches the app again.
   This is OS policy; no app can bypass it.
-- **OEM battery killers** (Xiaomi/MIUI, Oppo/ColorOS, Vivo, Huawei, Samsung):
-  aggressive vendor battery management can still kill the service. The only
-  mitigation is the user enabling "Autostart" + the battery-optimization
-  exemption; the app's onboarding links to dontkillmyapp.com.
+
 
 ## Permissions — no Developer Options required
 
